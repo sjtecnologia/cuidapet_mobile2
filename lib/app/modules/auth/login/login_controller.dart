@@ -11,13 +11,13 @@ import '../../../core/helpers/logger.dart';
 
 part 'login_controller.g.dart';
 
-class LoginController = _LoginControllerBase with _$LoginController;
+class LoginController = LoginControllerBase with _$LoginController;
 
-abstract class _LoginControllerBase with Store {
+abstract class LoginControllerBase with Store {
   final UserService _userService;
   final Logger _log;
 
-  _LoginControllerBase({
+  LoginControllerBase({
     required UserService userService,
     required Logger log,
   })  : _userService = userService,

@@ -10,16 +10,18 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Modular.setInitialRoute('/auth');
+    Modular.setObservers([asuka.asukaHeroController]);
     return ScreenUtilInit(
       designSize: const Size(390, 844),
-      builder: (_) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/auth/',
-        builder: asuka.builder,
-        navigatorObservers: [asuka.asukaHeroController],
+      builder: (_, __) => MaterialApp.router(
         title: UiConfig.title,
+        debugShowCheckedModeBanner: false,
+        builder: asuka.builder,
         theme: UiConfig.theme,
-      ).modular(),
+        routeInformationParser: Modular.routeInformationParser,
+        routerDelegate: Modular.routerDelegate,
+      ),
     );
   }
 }

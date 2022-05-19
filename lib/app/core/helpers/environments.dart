@@ -7,7 +7,7 @@ class Environments {
 
   static String? param(String paramName) {
     if (kReleaseMode) {
-      return RemoteConfig.instance.getString(paramName);
+      return FirebaseRemoteConfig.instance.getString(paramName);
     } else {
       return dotenv.env[paramName];
     }
@@ -15,7 +15,7 @@ class Environments {
 
   static Future<void> loadEnvs() async {
     if (kReleaseMode) {
-      await RemoteConfig.instance.fetchAndActivate();
+      await FirebaseRemoteConfig.instance.fetchAndActivate();
     } else {
       await dotenv.load();
     }

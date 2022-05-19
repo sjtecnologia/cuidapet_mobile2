@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 
 class AuthInteceptor extends Interceptor {
   final LocalStorage _localStorage;
+  // ignore: unused_field
   final LocalSecurityStorage _localSecurityStorage;
   final Logger _log;
   AuthInteceptor({

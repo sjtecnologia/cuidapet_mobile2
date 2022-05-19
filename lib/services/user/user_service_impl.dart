@@ -74,6 +74,7 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<void> socialLogin(SocialType socialType) async {
+    // ignore: unused_local_variable
     String? email;
 
     try {

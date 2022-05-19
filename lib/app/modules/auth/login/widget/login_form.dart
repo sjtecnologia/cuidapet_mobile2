@@ -1,8 +1,7 @@
 import 'package:cuidapet_mobile/app/core/ui/widgets/cuidapet_default_button.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/cuidapet_text_form_field.dart';
-import 'package:cuidapet_mobile/app/modules/auth/login/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+
 import 'package:validatorless/validatorless.dart';
 
 class LoginForm extends StatefulWidget {
@@ -12,7 +11,7 @@ class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends ModularState<LoginForm, LoginController> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _loginEC = TextEditingController();
   final _passwordEC = TextEditingController();
@@ -61,7 +60,7 @@ class _LoginFormState extends ModularState<LoginForm, LoginController> {
             onPressed: () {
               final formValid = _formKey.currentState?.validate() ?? false;
               if (formValid) {
-                controller.login(_loginEC.text, _passwordEC.text);
+                //controller.login(_loginEC.text, _passwordEC.text);
               }
             },
           ),

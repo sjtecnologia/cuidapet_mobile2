@@ -14,7 +14,7 @@ class AuthHomePage extends StatefulWidget {
         super(key: key);
 
   @override
-  _AuthHomePageState createState() => _AuthHomePageState();
+  State<AuthHomePage> createState() => _AuthHomePageState();
 }
 
 class _AuthHomePageState extends State<AuthHomePage> {
@@ -28,7 +28,7 @@ class _AuthHomePageState extends State<AuthHomePage> {
         Modular.to.navigate('/auth/login');
       }
     });
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       widget._authStore.loadUser();
     });
   }
