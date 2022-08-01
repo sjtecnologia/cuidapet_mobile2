@@ -89,6 +89,11 @@ class UserServiceImpl implements UserService {
             idToken: socialModel.id,
           );
           break;
+        case SocialType.facebook:
+          socialModel = await _socialRepository.facebookLogin();
+          authCredential =
+              FacebookAuthProvider.credential(socialModel.accessToken);
+          break;
       }
       await firebaseAuth.signInWithCredential(authCredential);
       final accessToken = await _userRepository.socialLogin(socialModel);

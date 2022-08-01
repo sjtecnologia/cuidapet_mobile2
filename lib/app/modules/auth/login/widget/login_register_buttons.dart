@@ -2,15 +2,17 @@ import 'package:cuidapet_mobile/app/core/ui/cuidapet_icons.dart';
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/models/social_type.dart';
 import 'package:cuidapet_mobile/app/modules/auth/login/login_controller.dart';
+
 import 'package:cuidapet_mobile/app/modules/auth/login/widget/rounded_button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:cuidapet_mobile/app/core/ui/extensions/size_screen_extension.dart';
 
 class LoginRegisterButtons extends StatelessWidget {
   final LoginController _loginController;
-  const LoginRegisterButtons(
-      {Key? key, required LoginController loginController})
-      : _loginController = loginController,
+  const LoginRegisterButtons({
+    Key? key,
+    required LoginController loginController,
+  })  : _loginController = loginController,
         super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class LoginRegisterButtons extends StatelessWidget {
           icon: Cuidapeticons.facebook,
           width: .42.sw,
           title: 'Facebook',
-          onTap: () {},
+          onTap: () => _loginController.socialLogin(SocialType.facebook),
         ),
         RoundedButtonWithIcon(
           color: const Color(0xFFE15031),

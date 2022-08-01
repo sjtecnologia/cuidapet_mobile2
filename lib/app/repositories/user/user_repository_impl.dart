@@ -11,7 +11,6 @@ import 'package:cuidapet_mobile/app/repositories/user/user_repository.dart';
 
 import '../../core/exceptions/failure.dart';
 import '../../core/exceptions/user_exists_exception.dart';
-import '../../core/exceptions/user_notfound_exception.dart';
 
 class UserRepositoryimpl implements UserRepository {
   final RestClient _restClient;
@@ -58,12 +57,11 @@ class UserRepositoryimpl implements UserRepository {
       });
       return result.data['access_token'];
     } on RestClientException catch (e, s) {
-      _log.error('Erro ao realizar login', e, s);
       if (e.statusCode == 403) {
-        _log.error('Usuário não encontrado', e, s);
-        throw UserNotfoundException();
+        throw Failure('Usuário inconsistente entre em contato com o suporte!');
       }
-      throw Failure('Erro ao ralizar login');
+      _log.error('Erro ao realizar login', e, s);
+      throw Failure('Erro ao ralizar login, tente novamente mais tarde');
     }
   }
 
@@ -93,21 +91,24 @@ class UserRepositoryimpl implements UserRepository {
   }
 
   @override
-  Future<String> socialLogin(SocialNetworkModel socialModel) async {
+  Future<String> socialLogin(SocialNetworkModel model) async {
     try {
       final result = await _restClient.unauth().post('/auth/', data: {
-        'login': socialModel.email,
+        'login': model.email,
         'social_login': true,
-        'avatar': socialModel.avatar,
-        'social_type': 'Google',
-        'social_key': socialModel.id,
-        'supplier_user': false,
+        'avatar': model.avatar,
+        'social_type': model.type,
+        'social_key': model.id,
+        'supplier_user': false
       });
 
       return result.data['access_token'];
     } on RestClientException catch (e, s) {
-      _log.error('Erro ao ralizar login', e, s);
-      throw Failure('Erro ao ralizar login');
+      if (e.statusCode == 403) {
+        throw Failure('Usuário inconsistente entre em contato com o suporte!');
+      }
+      _log.error('Erro ao realizar login', e, s);
+      throw Failure('Erro ao ralizar login, tente novamente mais tarde');
     }
   }
 }

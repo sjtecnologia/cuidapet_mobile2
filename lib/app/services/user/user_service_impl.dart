@@ -87,6 +87,11 @@ class UserServiceImpl implements UserService {
       final firebaseAuth = FirebaseAuth.instance;
 
       switch (socialType) {
+        case SocialType.facebook:
+          socialModel = await _socialRepository.facebookLogin();
+          authCredential =
+              FacebookAuthProvider.credential(socialModel.accessToken);
+          break;
         case SocialType.google:
           socialModel = await _socialRepository.googleLogin();
           authCredential = GoogleAuthProvider.credential(
@@ -95,6 +100,14 @@ class UserServiceImpl implements UserService {
           );
           break;
       }
+
+      final loginMethods =
+          await firebaseAuth.fetchSignInMethodsForEmail(socialModel.email);
+      final methodCheck = _getMethodToSocialLoginType(socialType);
+      if (loginMethods.isNotEmpty && !loginMethods.contains(methodCheck)) {
+        throw Failure(
+            'Login não pode ser feito por $methodCheck, por favor utilize outro método');
+      }
       // Processo comum do login com rede social
       await firebaseAuth.signInWithCredential(authCredential);
       final accessToken = await _userRepository.socialLogin(socialModel);
@@ -102,8 +115,18 @@ class UserServiceImpl implements UserService {
       await _confirmLogin();
       await _getUserData();
     } on FirebaseAuthException catch (e, s) {
-      _log.error('Erro ao realizar login no Firebase', e, s);
+      _log.error('Erro ao realizar login com $socialType', e, s);
       throw Failure('Erro ao realizar login no Firebase');
+    }
+  }
+
+  String _getMethodToSocialLoginType(SocialType socialType) {
+    switch (socialType) {
+      case SocialType.facebook:
+        return 'facebook.com';
+
+      case SocialType.google:
+        return 'google.com';
     }
   }
 }
